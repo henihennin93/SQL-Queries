@@ -1,0 +1,20 @@
+DECLARE @Counter INT 
+	  , @PoNumber NVARCHAR(400)
+DECLARE @local_table TABLE
+		(Id int, 
+		 PoNumber int
+		)
+SET @Counter=1
+WHILE ( @Counter <= (SELECT max(id) FROM [friendsurance].[dbo].[test]))
+
+BEGIN
+SET @PoNumber = (SELECT ponumber FROM [friendsurance].[dbo].[test] where id  = @Counter)
+
+INSERT @local_table
+      SELECT @Counter,value  
+FROM STRING_SPLIT(@PoNumber, '#')  
+WHERE RTRIM(value) <> '';
+
+    SET @Counter  = @Counter  + 1
+
+END
